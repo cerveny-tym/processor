@@ -3,13 +3,17 @@ package org.jboss.tools.f2f.processor;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.bson.Document;
 import org.jboss.tools.f2f.model.WordData;
 
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import com.mongodb.util.JSON;
 
 public class MongoDbDataDao implements WordDataDao {
@@ -44,9 +48,22 @@ public class MongoDbDataDao implements WordDataDao {
 	}
 
 	@Override
-	public void save(WordData data) {
-		// TODO Auto-generated method stub
-
+	public void save(Collection<WordData> data) {
+		MongoClient mg = new MongoClient(uri);
+		MongoDatabase db = mg.getDatabase("buzzword");
+		List<Document> payload = data.stream().map(wd -> toDocument(wd)).collect(Collectors.toList());
+		MongoCollection<Document> stats = db.getCollection("stats");
+		stats.drop();
+		stats.insertMany(payload);
+		mg.close();
 	}
 
+	private Document toDocument(WordData data) {
+		Document d = new Document().append("word", data.getWord())
+				.append("count", data.getCount())
+				.append("density", data.getDensity())
+				.append("frequency", data.getFrequency())
+				;
+		return d;
+	}
 }

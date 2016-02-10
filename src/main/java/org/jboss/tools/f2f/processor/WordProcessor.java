@@ -16,11 +16,7 @@ public class WordProcessor {
 	
 	public void process() {
 		Collection<WordData> data = getData(dao.getAll());
-		data.parallelStream().forEach(w -> save(w));
-	}
-
-	private void save(WordData w) {
-		dao.save(w);
+		dao.save(data);
 	}
 
 	private Collection<WordData> getData(Collection<String> texts) {
@@ -29,4 +25,10 @@ public class WordProcessor {
 		return processor.process(sb.toString());
 	}
 
+	
+	public static void main(String[] args) {
+		WordProcessor wordProcessor = new WordProcessor(new DefaultProcessor(), new MongoDbDataDao());
+		wordProcessor.process();
+	}
+	
 }

@@ -8,5 +8,5 @@ public interface WordDataDao {
 	
 	public Collection<String> getAll();
 	
-	public void save(WordData data); 
+	public void save(Collection<WordData> data); 
 }

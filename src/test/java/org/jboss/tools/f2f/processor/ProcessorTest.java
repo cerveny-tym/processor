@@ -3,7 +3,6 @@ package org.jboss.tools.f2f.processor;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.awt.Choice;
 import java.util.Collection;
 import java.util.Map;
 import java.util.function.Function;
@@ -31,18 +30,14 @@ public class ProcessorTest {
 		assertEquals(6, result.size());
 		WordData some = map.get("some");
 		assertEquals(1, some.getCount());
-		assertEquals(0.16, some.getFrequency(), 0.01);
-//		assertEquals(1, some.getDensity(), 0.1);
+		assertEquals(0.11, some.getFrequency(), 0.01);
 
 		WordData real = map.get("real");
 		assertEquals(3, real.getCount());
-		assertEquals(0.5, real.getFrequency(), 0.01);
-//		assertEquals(1, real.getDensity(), 0.1);
+		assertEquals(0.33, real.getFrequency(), 0.01);
 		
 		WordData test = map.get("test");
 		assertEquals(2, test.getCount());
-//		assertEquals(3, test.getFrequency(), 0.1);
-//		assertEquals(1, test.getDensity(), 0.1);
 		
 		WordData a = map.get("a");
 		assertEquals(1, a.getCount());

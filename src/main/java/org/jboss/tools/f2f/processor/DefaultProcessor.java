@@ -39,9 +39,8 @@ public class DefaultProcessor implements Processor {
 	
 	private void analyze(WordData data, int totalWords, int nbWords) {
 		float count = (float)data.getCount();
-		data.setDensity( count / totalWords);
-		data.setFrequency(count / nbWords);
-		System.err.println(data.getWord() + " : " + data.getCount());
+		data.setDensity( count / nbWords);
+		data.setFrequency(count / totalWords);
 	}
 
 }
