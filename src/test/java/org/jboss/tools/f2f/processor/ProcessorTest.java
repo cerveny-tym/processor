@@ -27,10 +27,7 @@ public class ProcessorTest {
 		Collection<WordData> result = processor.process(text);
 		Map<String, WordData> map = result.stream().collect(Collectors.toMap(WordData::getWord, Function.identity()));
 		assertNotNull(result);
-		assertEquals(6, result.size());
-		WordData some = map.get("some");
-		assertEquals(1, some.getCount());
-		assertEquals(0.11, some.getFrequency(), 0.01);
+		assertEquals(2, result.size());
 
 		WordData real = map.get("real");
 		assertEquals(3, real.getCount());
@@ -38,10 +35,7 @@ public class ProcessorTest {
 		
 		WordData test = map.get("test");
 		assertEquals(2, test.getCount());
-		
-		WordData a = map.get("a");
-		assertEquals(1, a.getCount());
-		
+		assertEquals(1.0, test.getDensity(), 0.01);
 	}
 
 }

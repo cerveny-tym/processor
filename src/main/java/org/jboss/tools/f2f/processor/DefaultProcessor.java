@@ -1,6 +1,12 @@
 package org.jboss.tools.f2f.processor;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
@@ -9,6 +15,19 @@ import org.jboss.tools.f2f.model.WordData;
 
 public class DefaultProcessor implements Processor {
 
+	private static final List<String> STOP_WORDS = new ArrayList<>();
+	
+	static {
+		try (BufferedReader  stopwords = new BufferedReader(new InputStreamReader(DefaultProcessor.class.getResourceAsStream("/stopwords.txt"), "UTF-8"))){
+			String line = null;
+			while ((line = stopwords.readLine()) != null) {
+				STOP_WORDS.add(line);
+			}
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+			
 	@Override
 	public Collection<WordData> process(String text) {
 		assert text != null;
@@ -25,10 +44,13 @@ public class DefaultProcessor implements Processor {
 
 	//TODO use Java 8 FP
 	private void count(String word, Map<String, WordData> map) {
-		if (word == null || word.isEmpty()) {
+		if (word == null || word.length() < 4) {
 			return;
 		}
 		word = word.toLowerCase();
+		if (STOP_WORDS.contains(word)) {
+			return;
+		}
 		WordData data = map.get(word);
 		if (data == null) {
 			data = new WordData(word);
